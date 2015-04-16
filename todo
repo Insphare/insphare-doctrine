@@ -1,0 +1,3 @@
+- use namespace
+- namespace autoloader
+- "configurator" -> app/entities/proxies

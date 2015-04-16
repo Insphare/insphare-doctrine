@@ -1,0 +1,8 @@
+database-credentials:
+  host: "localhost"
+  dbname: "your_databasename"
+  user: "your_username"
+  password: "your_password"
+  port: "3306"
+  driver: "pdo_mysql"
+  charset: "UTF8"
