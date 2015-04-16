@@ -4,3 +4,5 @@ doctrine.path:
   entities:
     - 'core/entities'
     - 'your/path/in/your/app'
+  proxy:
+    - '/tmp'
