@@ -1,7 +1,6 @@
 <?php
 
-include_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
-
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
 $entityPath = dirname(Registry::get(Registry::appDir)) . DIRECTORY_SEPARATOR . 'entities' . DIRECTORY_SEPARATOR;
 $commands = array(
 	'orm:clear-cache:metadata',

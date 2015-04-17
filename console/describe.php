@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
 
 $argument = null;
 if (!empty($argv[1])) {

@@ -1,5 +1,5 @@
 <?php
-include_once "bootstrap.php";
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
 $entityManager = Doctrine_Factory::getEntityManager(true);
 
 return $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
