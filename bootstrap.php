@@ -1,6 +1,6 @@
 <?php
 
-// register our autoloader with our namespace support.
+// register our autoloader to support our namespace.
 spl_autoload_register(function ($className) {
 	$ds = DIRECTORY_SEPARATOR;
 	$nsChar = '\\';
