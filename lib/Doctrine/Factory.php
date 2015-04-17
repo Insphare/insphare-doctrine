@@ -1,13 +1,14 @@
 <?php
+namespace insphare\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Tools\Setup;
 
 /**
- * Class Doctrine_Factory
+ * Class Factory
  */
-class Doctrine_Factory {
+class Factory {
 
 	/**
 	 * @var Doctrine_EntityManager
@@ -27,7 +28,7 @@ class Doctrine_Factory {
 	 */
 	public static function getEntityManager($real=false) {
 		if (null === self::$entityManager) {
-			$doctrineFactory = new Doctrine_Factory();
+			$doctrineFactory = new Factory();
 			$em = EntityManager::create($doctrineFactory->getDatabaseParams(), $doctrineFactory->getConfiguration());
 			$doctrineFactory->registerEventListener($em);
 			self::$entityManager[(int)true] = $em;
