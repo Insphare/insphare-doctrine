@@ -19,12 +19,29 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 		return Doctrine_Util::appendDoctrineNameSpace($entityName);
 	}
 
+
+
+	/**
+	 * @param mixed $entity
+	 */
+	private function treatTraversable(&$entity) {
+		if( $entity instanceof \Traversable ) {
+			$entity = iterator_to_array( $entity );
+		}
+	}
+
+	private function assertTraversableOrArray($entities) {
+		if (!($entities instanceof Traversable && is_array($entities))) {
+			throw new InvalidArgumentException('$entities have to be an array.');
+		}
+	}
+
 	/**
 	 * @param \entity\metaColumns $entity
 	 */
 	public function persistsAndFlush(\entity\metaColumns $entity) {
 		$this->wrapped->persist($entity);
-		$this->wrapped->flush($entity);
+		$this->flush($entity);
 	}
 
 	/**
@@ -32,7 +49,7 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	 */
 	public function removeAndFlush(\entity\metaColumns $entity) {
 		$this->wrapped->remove($entity);
-		$this->wrapped->flush($entity);
+		$this->flush($entity);
 	}
 
 	/**
@@ -40,22 +57,30 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	 * @param bool $doFlush
 	 */
 	public function bulkDelete(array $entities, $doFlush = false) {
-		foreach ($entities as $entity) {
-			$this->wrapped->remove($entity);
+		$this->assertTraversableOrArray($entities);
+		$this->treatTraversable($entities);
+		array_walk($entities, array($this->wrapped, 'remove'));
 
-			if (true === $doFlush) {
-				$this->wrapped->flush($entity);
-			}
+		if (true === $doFlush) {
+			$this->flush($entities);
 		}
 	}
 
+
+
 	/**
-	 * @param \entity\metaColumns[] $entities
+	 * @param \entity\metaColumns[]|Traversable $entities
 	 * @param bool $doFlush
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function bulkSoftDelete(array $entities, $doFlush = false) {
-		foreach ($entities as $entity) {
-			$this->softDelete($entity, $doFlush);
+	public function bulkSoftDelete($entities, $doFlush = false) {
+		$this->assertTraversableOrArray($entities);
+		$this->treatTraversable($entities);
+		array_walk($entities, array($this, 'softDelete'));
+
+		if (true === $doFlush) {
+			$this->flush($entities);
 		}
 	}
 
@@ -72,8 +97,18 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 		$this->wrapped->persist($entity);
 
 		if (true === $doFlush) {
-			$this->wrapped->flush($entity);
+			$this->flush($entity);
 		}
+	}
+
+
+
+	/**
+	* @param $entity
+	 */
+	public function flush($entity) {
+		$this->treatTraversable($entity);
+		$this->wrapped->flush($entity);
 	}
 
 	/**
