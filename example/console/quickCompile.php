@@ -1,7 +1,10 @@
 <?php
 
-include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
-$entityPath = dirname(Registry::get(Registry::appDir)) . DIRECTORY_SEPARATOR . 'entities' . DIRECTORY_SEPARATOR;
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'exampleBootstrap.php';
+
+$entityPath = \Insphare\Base\EnvironmentVars::get('doctrine.path');
+$entityPath = $entityPath['entities'];
+var_dump($entityPath);exit;
 $commands = array(
 	'orm:clear-cache:metadata',
 	'orm:clear-cache:query',

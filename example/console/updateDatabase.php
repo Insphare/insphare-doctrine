@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'exampleBootstrap.php';
 
 $argument = '--dump-sql';
 if (!empty($argv[1]) && $argv[1] === 'force') {

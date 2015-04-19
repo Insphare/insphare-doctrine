@@ -6,14 +6,14 @@ spl_autoload_register(function ($className) {
 	$nsChar = '\\';
 	$ns = 'Insphare';
 	if (0 === strpos($className, $ns . $nsChar)) {
-		$ds = DIRECTORY_SEPARATOR;
 		$insphareLibDir = 'lib'.$ds.'insphare'.$ds;
 		$arrIncludePath = array($insphareLibDir, 'base-listener', 'base-entity');
 		foreach ($arrIncludePath as $directory) {
 			$fullPath = implode($ds, array(__DIR__, $directory));
-			$file = str_replace(array('\\', $ns), array($ds, $fullPath), $className) . '.php';
+			$file = str_replace(array('\\', $ns, $ds.$ds), array($ds, $fullPath, $ds), $className) . '.php';
 			if (file_exists($file)) {
 				include_once $file;
+				break;
 			}
 		}
 	}
