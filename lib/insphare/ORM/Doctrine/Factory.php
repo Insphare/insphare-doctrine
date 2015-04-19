@@ -63,12 +63,12 @@ class Factory {
 	 * @return \Doctrine\ORM\Configuration
 	 */
 	private function getConfiguration() {
-		$arrAnnotations = (array)EnvironmentVars::get('doctrine.path.entities');
-		$arrAnnotations[] = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'base-entity';
-
-		$pathToProxies = EnvironmentVars::get('doctrine.path.proxy');
+		$ds = DIRECTORY_SEPARATOR;
+		$doctrinePhat = EnvironmentVars::get('doctrine.path');
+		$arrAnnotations = (array)$doctrinePhat['entities'];
+		$arrAnnotations[] = implode($ds, array_merge(array_slice(explode($ds, __DIR__), 0, -4), array('base-entity')));
+		$pathToProxies = $doctrinePhat['proxy'];
 		$isDev = EnvironmentVars::get('doctrine.is_development');
-
 		$cache = new ArrayCache();
 		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies, $cache, false);
 		return $configuration;

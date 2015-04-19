@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\ORM\Listener\Base\Entity;
+namespace Insphare\ORM\Listener\Base;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;

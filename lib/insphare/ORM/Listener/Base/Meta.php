@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\Listener;
+namespace Insphare\ORM\Listener\Base;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
