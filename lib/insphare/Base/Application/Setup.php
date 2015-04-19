@@ -1,6 +1,7 @@
 <?php
 namespace Insphare\Base\Application;
 use Insphare\Common\DirectoryIterator;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Setup
@@ -41,13 +42,16 @@ class Setup {
 		if (true === $this->isRunning) {
 			throw new \Exception('The insphare/orm application is already running.');
 		}
+
+		$evnConfig = array();
 		foreach ($this->configDirs as $dir) {
-			var_dump($dir);exit;
 			$fileSpl = new DirectoryIterator($dir);
-			$fileSpl->addAllowedExtension('.yml');
+			$fileSpl->addAllowedExtension('yml');
 			foreach ($fileSpl->getSplFiles() as $splFile) {
-				var_dump($splFile);exit;
+				$config = Yaml::parse(file_get_contents((string)$splFile));
+				$evnConfig = array_replace_recursive($evnConfig, $config);
 			}
+			print_r($evnConfig);exit;
 		}
 		exit;
 		// load config | append other configs | ggf. overwrites
