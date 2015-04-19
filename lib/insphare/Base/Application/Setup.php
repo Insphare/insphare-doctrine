@@ -1,5 +1,6 @@
 <?php
 namespace Insphare\Base\Application;
+use Insphare\Common\DirectoryIterator;
 
 /**
  * Class Setup
@@ -21,7 +22,7 @@ class Setup {
 	 *
 	 */
 	public function __construct() {
-		$path = array_slice(explode(DIRECTORY_SEPARATOR, __DIR__), -3);
+		$path = array_slice(explode(DIRECTORY_SEPARATOR, __DIR__), 0, -4);
 		$path[] = 'base-config';
 		array_push($this->configDirs, implode(DIRECTORY_SEPARATOR, $path));
 	}
@@ -40,7 +41,14 @@ class Setup {
 		if (true === $this->isRunning) {
 			throw new \Exception('The insphare/orm application is already running.');
 		}
-		var_dump($this->configDirs);
+		foreach ($this->configDirs as $dir) {
+			var_dump($dir);exit;
+			$fileSpl = new DirectoryIterator($dir);
+			$fileSpl->addAllowedExtension('.yml');
+			foreach ($fileSpl->getSplFiles() as $splFile) {
+				var_dump($splFile);exit;
+			}
+		}
 		exit;
 		// load config | append other configs | ggf. overwrites
 	}
