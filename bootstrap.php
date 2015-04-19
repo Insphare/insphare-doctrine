@@ -21,8 +21,3 @@ spl_autoload_register(function ($className) {
 
 // register composers autoloader from our dependencies
 include_once 'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
-
-// but should not here... it have to do the customer..
-use Insphare\Base\Application\Setup;
-$x = new Setup();
-$x->run();
