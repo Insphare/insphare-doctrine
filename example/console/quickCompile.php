@@ -5,11 +5,11 @@ include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'exampleBootstrap.php';
 $entityPath = \Insphare\Base\EnvironmentVars::get('doctrine.path');
 $entityPath = reset($entityPath['entities']);
 $commands = array(
-	'orm:clear-cache:metadata',
-	'orm:clear-cache:query',
-	'orm:clear-cache:result',
+//	'orm:clear-cache:metadata',
+//	'orm:clear-cache:query',
+//	'orm:clear-cache:result',
 	'orm:generate-entities ' . $entityPath,
-	'orm:generate-proxies ' . $entityPath . DIRECTORY_SEPARATOR . 'proxies',
+//	'orm:generate-proxies ' . $entityPath . DIRECTORY_SEPARATOR . 'proxies',
 );
 
 foreach ($commands as $command) {

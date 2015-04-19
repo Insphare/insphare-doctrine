@@ -72,7 +72,7 @@ class Autoloader {
 						$includePath,
 						self::DS
 					), $className) . '.php';
-
+echo $file . PHP_EOL;
 				if (file_exists($file)) {
 					include_once $file;
 					break;
