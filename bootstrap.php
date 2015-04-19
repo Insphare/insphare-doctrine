@@ -5,7 +5,7 @@ include_once implode($ds, array(__DIR__, 'lib', 'insphare', 'Base', 'Autoloader.
 
 $arrIncludePath = array(
 	'Insphare' => __DIR__ . $ds . 'lib' . $ds . 'insphare',
-	'entity' => __DIR__ . $ds . 'base-entity',
+	'entity' => __DIR__ . $ds . 'base-entity' . $ds . 'entity',
 );
 
 foreach ($arrIncludePath as $namespace => $includePath) {
