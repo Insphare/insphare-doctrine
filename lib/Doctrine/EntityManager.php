@@ -1,14 +1,14 @@
 <?php
+namespace Insphare\Doctrine;
 
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use entity\metaColumns;
 
 /**
- * Class Doctrine_EntityManager
+ * Class EntityManager
  */
-class Doctrine_EntityManager extends EntityManagerDecorator {
+class EntityManager extends EntityManagerDecorator {
 
 	/**
 	 * @param string $entityName
@@ -16,49 +16,51 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	 * @return string
 	 */
 	private function appendDoctrineNameSpace($entityName) {
-		return Doctrine_Util::appendDoctrineNameSpace($entityName);
+		return Util::appendDoctrineNameSpace($entityName);
 	}
-
-
 
 	/**
 	 * @param mixed $entity
 	 */
-	private function treatTraversable(&$entity) {
+	private function iteratorToArray(&$entity) {
 		if( $entity instanceof \Traversable ) {
 			$entity = iterator_to_array( $entity );
 		}
 	}
 
+	/**
+	 * @param $entities
+	 * @throws \InvalidArgumentException
+	 */
 	private function assertTraversableOrArray($entities) {
-		if (!($entities instanceof Traversable && is_array($entities))) {
-			throw new InvalidArgumentException('$entities have to be an array.');
+		if (!($entities instanceof \Traversable && is_array($entities))) {
+			throw new \InvalidArgumentException('$entities have to be an array.');
 		}
 	}
 
 	/**
-	 * @param \entity\metaColumns $entity
+	 * @param \entity\metaColumns|object $entity
 	 */
-	public function persistsAndFlush(\entity\metaColumns $entity) {
+	public function persistsAndFlush($entity) {
 		$this->wrapped->persist($entity);
 		$this->flush($entity);
 	}
 
 	/**
-	 * @param \entity\metaColumns $entity
+	 * @param \entity\metaColumns|object $entity
 	 */
-	public function removeAndFlush(\entity\metaColumns $entity) {
+	public function removeAndFlush($entity) {
 		$this->wrapped->remove($entity);
 		$this->flush($entity);
 	}
 
 	/**
-	 * @param \entity\metaColumns[] $entities
+	 * @param \entity\metaColumns[]|object[] $entities
 	 * @param bool $doFlush
 	 */
 	public function bulkDelete(array $entities, $doFlush = false) {
 		$this->assertTraversableOrArray($entities);
-		$this->treatTraversable($entities);
+		$this->iteratorToArray($entities);
 		array_walk($entities, array($this->wrapped, 'remove'));
 
 		if (true === $doFlush) {
@@ -69,14 +71,14 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 
 
 	/**
-	 * @param \entity\metaColumns[]|Traversable $entities
+	 * @param \entity\metaColumns[]|object[]|\Traversable $entities
 	 * @param bool $doFlush
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function bulkSoftDelete($entities, $doFlush = false) {
 		$this->assertTraversableOrArray($entities);
-		$this->treatTraversable($entities);
+		$this->iteratorToArray($entities);
 		array_walk($entities, array($this, 'softDelete'));
 
 		if (true === $doFlush) {
@@ -85,11 +87,11 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	}
 
 	/**
-	 * @param \entity\metaColumns $entity
+	 * @param metaColumns $entity
 	 * @param bool $doFlush
 	 */
-	public function softDelete(\entity\metaColumns $entity, $doFlush = false) {
-		if (!method_exists($entity, Doctrine_Util::buildSetMethodName('set_flag_soft_delete'))) {
+	public function softDelete(metaColumns $entity, $doFlush = false) {
+		if (!method_exists($entity, Util::buildSetMethodName('set_flag_soft_delete'))) {
 			return;
 		}
 
@@ -106,8 +108,8 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	/**
 	* @param $entity
 	 */
-	public function flush($entity) {
-		$this->treatTraversable($entity);
+	public function flush($entity = null) {
+		$this->iteratorToArray($entity);
 		$this->wrapped->flush($entity);
 	}
 
@@ -154,7 +156,7 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	 * @return QueryBuilder
 	 */
 	public function createQueryBuilder() {
-		return new Doctrine_QueryBuilder($this->wrapped);
+		return new QueryBuilder($this->wrapped);
 	}
 
 	/**
@@ -163,6 +165,6 @@ class Doctrine_EntityManager extends EntityManagerDecorator {
 	 * @return mixed
 	 */
 	public function traversal($objectOrArray, $path) {
-		return Entity_Traversal::traverse($objectOrArray, $path);
+		return Traversal::traverse($objectOrArray, $path);
 	}
 }

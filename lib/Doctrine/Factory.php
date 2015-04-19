@@ -1,6 +1,9 @@
 <?php
-namespace insphare\Doctrine;
+namespace Insphare\Doctrine;
 
+use Doctrine\Common\Cache\ArrayCache;
+use Insphare\Base\EnvironmentVars;
+use Insphare\Doctrine as insphareDoctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Tools\Setup;
@@ -11,7 +14,7 @@ use Doctrine\ORM\Tools\Setup;
 class Factory {
 
 	/**
-	 * @var Doctrine_EntityManager
+	 * @var EntityManager
 	 */
 	private static $entityManager;
 
@@ -24,15 +27,15 @@ class Factory {
 
 	/**
 	 * @param bool $real
-	 * @return Doctrine_EntityManager
+	 * @return EntityManager
 	 */
-	public static function getEntityManager($real=false) {
+	public static function getEntityManager($real = false) {
 		if (null === self::$entityManager) {
 			$doctrineFactory = new Factory();
 			$em = EntityManager::create($doctrineFactory->getDatabaseParams(), $doctrineFactory->getConfiguration());
 			$doctrineFactory->registerEventListener($em);
 			self::$entityManager[(int)true] = $em;
-			self::$entityManager[(int)false] = new Doctrine_EntityManager($em);
+			self::$entityManager[(int)false] = new insphareDoctrine\EntityManager($em);
 		}
 
 		return self::$entityManager[(int)$real];
@@ -42,26 +45,18 @@ class Factory {
 	 * @param EntityManager $em
 	 */
 	private function registerEventListener(EntityManager $em) {
-		$eventManager = $em->getEventManager();
-		$events = array(
-			Events::onFlush,
-			Events::preUpdate,
-			Events::preRemove,
-			Events::prePersist,
-			Events::postUpdate,
-			Events::postPersist,
-			Events::postRemove,
-			Events::postLoad,
-		);
-		$eventManager->addEventListener($events, new Doctrine_Listener());
-		$eventManager->addEventListener($events, new Listener_CaseBased_Meta());
+		foreach ((array)EnvironmentVars::get('doctrine.eventlistener') as $listenerConfig) {
+			$className = (string)$listenerConfig['class'];
+			$realClass = new $className();
+			$em->getEventManager()->addEventListener((array)$listenerConfig['events'], $realClass);
+		}
 	}
 
 	/**
 	 * @return mixed
 	 */
 	private function getDatabaseParams() {
-		$dbParams = Core_Config::get('database-credentials');
+		$dbParams = EnvironmentVars::get('database-credentials');
 		return $dbParams;
 	}
 
@@ -69,14 +64,14 @@ class Factory {
 	 * @return \Doctrine\ORM\Configuration
 	 */
 	private function getConfiguration() {
+		$arrAnnotations = (array)EnvironmentVars::get('doctrine.path.entities');
+		$arrAnnotations[] = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'base-entity';
 
-		$entityDir = Core_Environment::get(Core_Environment::ENTITY_DIR);
-		$pathAnnotation = $entityDir . 'entity';
-		$pathProxies = $entityDir . 'proxies';
-		$isDev = Core_Environment::get(Core_Environment::IS_DEVELOPMENT_MODE);
+		$pathToProxies = EnvironmentVars::get('doctrine.path.proxy');
+		$isDev = EnvironmentVars::get('doctrine.is_development');
 
-		$cache = new \Doctrine\Common\Cache\ArrayCache();
-		$configuration = Setup::createAnnotationMetadataConfiguration(array($pathAnnotation), $isDev, $pathProxies, $cache, false);
+		$cache = new ArrayCache();
+		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies, $cache, false);
 		return $configuration;
 	}
 }

@@ -1,14 +1,14 @@
 <?php
+namespace Insphare\Listener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Insphare\Base\EnvironmentVars;
 
 /**
  * Class Listener_CaseBased_Meta
  */
-class Listener_CaseBased_Meta {
+class Meta {
 
 	/**
 	 *
@@ -24,58 +24,12 @@ class Listener_CaseBased_Meta {
 	const DELETE = 'softDelete';
 
 	/**
-	 * @param PreUpdateEventArgs $eventArgs
-	 */
-	public function preUpdate(PreUpdateEventArgs $eventArgs) {
-		$entity = $eventArgs->getObject();
-		foreach ($eventArgs->getEntityChangeSet() as $column => $changeSet) {
-			list($before, $after) = $changeSet;
-		}
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function preRemove(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function postUpdate(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function postPersist(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function postRemove(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function prePersist(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
-	 * @param LifecycleEventArgs $eventArgs
-	 */
-	public function postLoad(LifecycleEventArgs $eventArgs) {
-	}
-
-	/**
 	 * @param OnFlushEventArgs $eventArgs
 	 */
 	public function onFlush(OnFlushEventArgs $eventArgs) {
 		$em = $eventArgs->getEntityManager();
 		$uow = $em->getUnitOfWork();
-		$compute = new SplObjectStorage();
+		$compute = new \SplObjectStorage();
 
 		foreach ($uow->getScheduledEntityInsertions() AS $entity) {
 			$this->setDate($entity, self::CREATE);
@@ -98,13 +52,6 @@ class Listener_CaseBased_Meta {
 			$compute->attach($entity);
 		}
 
-		foreach ($uow->getScheduledCollectionDeletions() AS $col) {
-
-		}
-
-		foreach ($uow->getScheduledCollectionUpdates() AS $col) {
-		}
-
 		$skipOn = array(
 			UnitOfWork::STATE_REMOVED,
 			UnitOfWork::STATE_DETACHED
@@ -119,7 +66,7 @@ class Listener_CaseBased_Meta {
 	/**
 	 * @param \entity\metaColumns $entity
 	 */
-	private function checkForDeletion(\entity\metaColumns $entity) {
+	private function checkForDeletion($entity) {
 		$flagValue = null;
 		if (method_exists($entity, 'getFlagSoftDelete')) {
 			$flagValue = $entity->getFlagSoftDelete();
@@ -137,8 +84,8 @@ class Listener_CaseBased_Meta {
 	 * @param \entity\metaColumns $entity
 	 * @param $state
 	 */
-	private function setUser(\entity\metaColumns $entity, $state) {
-		$userId = App_Reveal::getIdentity()->getUser()->getId();
+	private function setUser($entity, $state) {
+		$userId = EnvironmentVars::get(EnvironmentVars::USER_ID);
 
 		$methodName = $this->generateMethodName($state, 'user');
 		if (method_exists($entity, $methodName) && (int)$userId > 0) {
@@ -150,10 +97,10 @@ class Listener_CaseBased_Meta {
 	 * @param \entity\metaColumns $entity
 	 * @param $state
 	 */
-	private function setDate(\entity\metaColumns $entity, $state) {
+	private function setDate($entity, $state) {
 		$methodName = $this->generateMethodName($state, 'date');
 		if (method_exists($entity, $methodName)) {
-			$date = new DateTime();
+			$date = new \DateTime();
 			$entity->{$methodName}($date);
 		}
 	}

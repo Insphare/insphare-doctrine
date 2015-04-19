@@ -2,7 +2,6 @@ doctrine.namespace: entity\
 doctrine.is_development: true
 doctrine.path:
   entities:
-    - 'core/entities'
     - 'your/path/in/your/app'
   proxy:
     - '/tmp'

@@ -1,9 +1,12 @@
 <?php
+namespace Insphare\Abstracts;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * Class Abstract_Repository
+ * Class RepositoryAbstract
  */
-abstract class Abstract_Repository extends \Doctrine\ORM\EntityRepository {
+abstract class RepositoryAbstract extends EntityRepository {
 
 	/**
 	 * @return \Doctrine\ORM\Query\Expr
@@ -13,7 +16,7 @@ abstract class Abstract_Repository extends \Doctrine\ORM\EntityRepository {
 	}
 
 	/**
-	 * @return \Doctrine\ORM\QueryBuilder
+	 * @return QueryBuilder
 	 */
 	protected function cqb() {
 		return $this->createQueryBuilder($this->getEntityName());

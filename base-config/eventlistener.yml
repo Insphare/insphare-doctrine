@@ -1,4 +1,8 @@
 doctrine.eventlistener:
   meta-column:
+    events: [onFlush,preUpdate,preRemove,prePersist,postUpdate,postPersist,postRemove,postLoad]
+    class: 'Insphare\Listener\Meta'
 
   global-handler:
+    events: [onFlush,preUpdate,preRemove,prePersist,postUpdate,postPersist,postRemove,postLoad]
+    class: 'Insphare\Listener\Entity'

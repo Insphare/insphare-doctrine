@@ -2,7 +2,6 @@
 namespace entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\UnitOfWork;
 
 /**
  * @ORM\Table(name="metaColumns", *indexes={@ORM\Index(name="ix_flag_soft_delete", columns={"flag_soft_delete"})})
@@ -44,17 +43,6 @@ abstract class metaColumns {
 	 * @ORM\Column(type="smallint", length=1, nullable=true, options={"default":NULL})
 	 */
 	protected $flag_soft_delete;
-
-	/**
-	 * @return \Doctrine\ORM\EntityManager
-	 */
-	private function getEntityManager() {
-		return \Doctrine_Factory::getEntityManager();
-	}
-
-	public function isStateNew() {
-		return $this->getEntityManager()->getUnitOfWork()->getEntityState($this) === UnitOfWork::STATE_NEW;
-	}
 
 	public function getCurrentDate() {
 		return new \DateTime();

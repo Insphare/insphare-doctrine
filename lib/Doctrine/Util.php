@@ -1,12 +1,14 @@
 <?php
+namespace Insphare\Doctrine;
+use Insphare\Base\EnvironmentVars;
 
 /**
- * Doctrine_Util
+ * Util
  *
  * Global custom made doctrine Helper functions.
  *
  */
-class Doctrine_Util {
+class Util {
 
 	/**
 	 * @param string|array $methodName
@@ -47,7 +49,7 @@ class Doctrine_Util {
 	 * @return string
 	 */
 	public static function appendDoctrineNameSpace($entityName) {
-		$nameSpace = Core_Config::get('doctrine.namespace');
+		$nameSpace = EnvironmentVars::get('doctrine.namespace');
 		if (empty($nameSpace)) {
 			return $entityName;
 		}
@@ -56,7 +58,7 @@ class Doctrine_Util {
 		self::ensureBackSlashAtFirstChar($entityName);
 
 		if (0 !== strpos($entityName, $nameSpace)) {
-			$entityName = preg_replace('~' . preg_quote(PHP_BACKSLASH) . '{2,}~', PHP_BACKSLASH, $nameSpace . $entityName);
+			$entityName = preg_replace('~' . preg_quote('\\') . '{2,}~', '\\', $nameSpace . $entityName);
 		}
 
 		return ltrim($entityName, '\\');
@@ -66,8 +68,8 @@ class Doctrine_Util {
 	 * @param $string
 	 */
 	private static function ensureBackSlashAtFirstChar(&$string) {
-		if (PHP_BACKSLASH === substr($string, 0, 1)) {
-			$string = ltrim($string, PHP_BACKSLASH);
+		if ('\\' === substr($string, 0, 1)) {
+			$string = ltrim($string, '\\');
 		}
 	}
 }

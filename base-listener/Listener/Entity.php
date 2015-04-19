@@ -1,49 +1,55 @@
 <?php
+namespace Insphare\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Insphare\Base\Listener\Exception\ClassMissing;
+use Insphare\Base\Listener\Exception\NotAvailable;
+use Insphare\Base\Listener\ListenerAbstract;
 
-class Doctrine_Listener {
+/**
+ * Class Entity
+ * @package Insphare\Doctrine
+ *
+ * I'm the "global" entity catcher and all the entities come to me and I offer the entities a storage place with simplified usage. :-)
+ */
+class Entity {
 
 	/**
-	 * @var Core_ObjectContainer
-	 */
-	private $objectContainer;
-
-	/**
-	 * @param \entity\metaColumns $entity
+	 * @param \entity\metaColumns|object $entity
 	 *
-	 * @return Abstract_Listener
-	 * @throws Exception_ListenerAbstractClassMissing
-	 * @throws Exception_ListenerNotAvailable
+	 * @throws \Insphare\Base\Listener\Exception\ClassMissing
+	 * @throws \Insphare\Base\Listener\Exception\NotAvailable
+	 * @return ListenerAbstract
 	 */
-	private function getListenerClass(\entity\metaColumns $entity) {
-		$entity = get_class($entity);
-		Core_Autoloader::treatNameSpace($entity);
-		$listenerClassName = 'Listener_' . ucfirst($entity);
+	private function getListenerClass($entity) {
+		$entityClassName = get_class($entity);
 
-		if (null === $this->objectContainer) {
-			$this->objectContainer = new Core_ObjectContainer();
-		}
+		//@todo check
+		// Core_Autoloader::treatNameSpace($entityClassName);
+		$listenerClassName = 'Listener_' . ucfirst($entityClassName);
 
-		$autoLoader = $this->objectContainer->getCoreAutoloader();
-		if (false === $autoLoader->classExists($listenerClassName, true)) {
-			throw new Exception_ListenerNotAvailable(get_class($entity));
+		if (!class_exists($listenerClassName, true)) {
+			throw new NotAvailable($entityClassName);
 		}
 
 		$listenerClass = new $listenerClassName();
 
-		if (!$listenerClass instanceof Abstract_Listener) {
-			throw new Exception_ListenerAbstractClassMissing(get_class($entity) . ' must implements Abstract_Listener');
+		if (!$listenerClass instanceof ListenerAbstract) {
+			throw new ClassMissing($entityClassName . ' must implements Listener');
 		}
 
 		return $listenerClass;
 	}
 
+	/**
+	 * @param PreUpdateEventArgs $eventArgs
+	 */
 	public function preUpdate(PreUpdateEventArgs $eventArgs) {
+		/** @var object $entity */
 		$entity = $eventArgs->getObject();
 
 		try {
@@ -54,46 +60,72 @@ class Doctrine_Listener {
 				$listenerClass->preUpdateTrigger($column, $before, $after);
 			}
 		}
-		catch (Exception_ListenerNotAvailable $e) {
+		catch (NotAvailable $e) {
 		}
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function preRemove(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function postUpdate(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function postPersist(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function postRemove(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function prePersist(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 */
 	public function postLoad(LifecycleEventArgs $eventArgs) {
 		$this->lifecycleEventCall($eventArgs, __METHOD__);
 	}
 
+	/**
+	 * @param LifecycleEventArgs $eventArgs
+	 * @param string $callback
+	 */
 	private function lifecycleEventCall(LifecycleEventArgs $eventArgs, $callback) {
 		$callback = explode('::', $callback);
 		$callback = end($callback);
+		/** @var object $entity */
 		$entity = $eventArgs->getObject();
 		try {
 			$listenerClass = $this->getListenerClass($entity);
 			$listenerClass->{$callback}($entity);
 		}
-		catch (Exception_ListenerNotAvailable $e) {
+		catch (NotAvailable $e) {
 		}
 	}
 
+	/**
+	 * @param OnFlushEventArgs $eventArgs
+	 */
 	public function onFlush(OnFlushEventArgs $eventArgs) {
 		$em = $eventArgs->getEntityManager();
 		$uow = $em->getUnitOfWork();
@@ -117,9 +149,18 @@ class Doctrine_Listener {
 		}
 	}
 
-	private function executeOnFlush($state, \entity\metaColumns $entity, UnitOfWork $uow, EntityManager $em) {
+	/**
+	 * @param string $state
+	 * @param object $entity
+	 * @param UnitOfWork $uow
+	 * @param EntityManager $em
+	 */
+	private function executeOnFlush($state, $entity, UnitOfWork $uow, EntityManager $em) {
 		try {
-			$skipOn = array(UnitOfWork::STATE_REMOVED, UnitOfWork::STATE_DETACHED);
+			$skipOn = array(
+				UnitOfWork::STATE_REMOVED,
+				UnitOfWork::STATE_DETACHED
+			);
 			if (in_array($uow->getEntityState($entity), $skipOn)) {
 				return;
 			}
@@ -127,7 +168,7 @@ class Doctrine_Listener {
 			$listenerClass->onFlush($entity, $state, $uow);
 			$uow->recomputeSingleEntityChangeSet($em->getClassMetadata(get_class($entity)), $entity);
 		}
-		catch (Exception_ListenerNotAvailable $e) {
+		catch (NotAvailable $e) {
 		}
 	}
 }

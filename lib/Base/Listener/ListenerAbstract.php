@@ -1,21 +1,22 @@
 <?php
+namespace Insphare\Base\Listener;
 
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Insphare\Doctrine\Factory;
 
 /**
  * Note: You can use pre/post event listener in annotations too.
  * For more information visit the documentation: http://doctrine-orm.readthedocs.org/en/latest/reference/annotations-reference.html#postpersist
  *
- * Class Abstract_Listener
+ * Class Listener
  */
-abstract class Abstract_Listener implements Abstract_Interface {
+abstract class ListenerAbstract implements ListenerInterface {
 
 	/**
-	 * @param \entity\metaColumns $entity
+	 * @param \entity\metaColumns|object $entity
 	 */
-	protected function includeInFlush(\entity\metaColumns $entity ) {
-		$entityManger = Doctrine_Factory::getEntityManager();
+	protected function includeInFlush($entity ) {
+		$entityManger = Factory::getEntityManager();
 
 		$objMetaData = $entityManger->getClassMetadata( get_class( $entity ) );
 		if( $entityManger->getUnitOfWork()->isScheduledForInsert( $entity ) ||

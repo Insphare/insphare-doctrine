@@ -1,10 +1,11 @@
 <?php
-use Doctrine\ORM\QueryBuilder;
+namespace Insphare\Doctrine;
+use Doctrine\ORM\QueryBuilder as originQueryBuilder;
 
 /**
- * Class Doctrine_EntityManager
+ * Class EntityManager
  */
-class Doctrine_QueryBuilder extends QueryBuilder {
+class QueryBuilder extends originQueryBuilder {
 
 	/**
 	 * Support auto-namespace.
@@ -16,7 +17,7 @@ class Doctrine_QueryBuilder extends QueryBuilder {
 	 * @return QueryBuilder This QueryBuilder instance.
 	 */
 	public function from($from, $alias, $indexBy = null) {
-		$from = Doctrine_Util::appendDoctrineNameSpace($from);
+		$from = Util::appendDoctrineNameSpace($from);
 
 		return parent::from($from, $alias, $indexBy);
 	}

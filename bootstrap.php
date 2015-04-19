@@ -4,12 +4,15 @@
 spl_autoload_register(function ($className) {
 	$ds = DIRECTORY_SEPARATOR;
 	$nsChar = '\\';
-	$ns = 'insphare';
+	$ns = 'Insphare';
 	if (0 === strpos($className, $ns . $nsChar)) {
-		$includePath = implode($ds, array(__DIR__, 'lib'));
-		$file = str_replace(array('\\', $ns), array($ds, $includePath), $className) . '.php';
-		if (file_exists($file)) {
-			include_once $file;
+		$arrIncludePath = array('lib', 'base-listener', 'base-entity');
+		foreach ($arrIncludePath as $directory) {
+			$fullPath = implode($ds, array(__DIR__, $directory));
+			$file = str_replace(array('\\', $ns), array($ds, $fullPath), $className) . '.php';
+			if (file_exists($file)) {
+				include_once $file;
+			}
 		}
 	}
 });
