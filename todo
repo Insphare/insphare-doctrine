@@ -1,2 +1,2 @@
 split base to external repository and create a dependency in composer
-strange behavior when compiling entities about more directories...
+strange behavior when compiling entities about more directories... check if does work when only including base-entity by cli
