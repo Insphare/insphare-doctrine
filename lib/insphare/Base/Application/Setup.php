@@ -38,7 +38,7 @@ class Setup {
 	 */
 	public function run() {
 		if (true === $this->isRunning) {
-			throw new Exception('The insphare/orm application is already running.');
+			throw new \Exception('The insphare/orm application is already running.');
 		}
 		var_dump($this->configDirs);
 		exit;
