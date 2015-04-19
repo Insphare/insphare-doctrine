@@ -1,14 +1,14 @@
 <?php
-namespace Insphare\Doctrine;
+namespace Insphare\ORM\Listener\Base\Entity;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Insphare\Base\Listener\Exception\ClassMissing;
-use Insphare\Base\Listener\Exception\NotAvailable;
-use Insphare\Base\Listener\ListenerAbstract;
+use Insphare\ORM\Listener\Exception\ClassMissing;
+use Insphare\ORM\Listener\Exception\NotAvailable;
+use Insphare\ORM\Listener\ListenerAbstract;
 
 /**
  * Class Entity
@@ -21,8 +21,8 @@ class Entity {
 	/**
 	 * @param \entity\metaColumns|object $entity
 	 *
-	 * @throws \Insphare\Base\Listener\Exception\ClassMissing
-	 * @throws \Insphare\Base\Listener\Exception\NotAvailable
+	 * @throws \Insphare\ORM\Listener\Exception\NotAvailable
+	 * @throws \Insphare\ORM\Listener\Exception\ClassMissing
 	 * @return ListenerAbstract
 	 */
 	private function getListenerClass($entity) {
@@ -140,12 +140,6 @@ class Entity {
 
 		foreach ($uow->getScheduledEntityDeletions() AS $entity) {
 			$this->executeOnFlush($uow->getEntityState($entity), $entity, $uow, $em);
-		}
-
-		foreach ($uow->getScheduledCollectionDeletions() AS $col) {
-		}
-
-		foreach ($uow->getScheduledCollectionUpdates() AS $col) {
 		}
 	}
 

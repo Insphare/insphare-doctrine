@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\Doctrine;
+namespace Insphare\ORM\Doctrine;
 
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\QueryBuilder;

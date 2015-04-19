@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\Base\Listener;
+namespace Insphare\ORM\Listener;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\UnitOfWork;

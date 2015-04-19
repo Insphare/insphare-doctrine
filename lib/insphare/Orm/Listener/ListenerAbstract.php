@@ -1,8 +1,8 @@
 <?php
-namespace Insphare\Base\Listener;
+namespace Insphare\ORM\Listener;
 
 use Doctrine\ORM\UnitOfWork;
-use Insphare\Doctrine\Factory;
+use Insphare\ORM\Doctrine\Factory;
 
 /**
  * Note: You can use pre/post event listener in annotations too.

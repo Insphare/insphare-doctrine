@@ -1,11 +1,10 @@
 <?php
-namespace Insphare\Doctrine;
+namespace Insphare\ORM\Doctrine;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Insphare\Base\EnvironmentVars;
-use Insphare\Doctrine as insphareDoctrine;
+use Insphare\ORM\Doctrine as insphareDoctrine;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Tools\Setup;
 
 /**

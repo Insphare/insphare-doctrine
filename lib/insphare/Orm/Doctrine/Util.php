@@ -1,5 +1,6 @@
 <?php
-namespace Insphare\Doctrine;
+namespace Insphare\ORM\Doctrine;
+
 use Insphare\Base\EnvironmentVars;
 
 /**

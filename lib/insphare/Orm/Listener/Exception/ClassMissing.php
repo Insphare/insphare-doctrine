@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\Base\Listener\Exception;
+namespace Insphare\ORM\Listener\Exception;
 
 use Insphare\Base\Exception;
 
