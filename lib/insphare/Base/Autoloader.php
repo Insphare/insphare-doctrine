@@ -1,9 +1,6 @@
 <?php
 namespace Insphare\Base;
 
-//@todo add method to set include path
-//@todo add none namespace usage
-
 /**
  * Class Autoloader
  * @package Insphare\Base
@@ -24,11 +21,20 @@ class Autoloader {
 	 */
 	private $nameSpace = null;
 
+	private $includePath = array();
+
 	/**
 	 * @param null $nameSpace
 	 */
 	public function setNameSpace($nameSpace) {
 		$this->nameSpace = $nameSpace;
+	}
+
+	/**
+	 * @param $path
+	 */
+	public function addIncludePath($path) {
+		$this->includePath[] = rtrim($path, self::DS);
 	}
 
 	/**
@@ -56,22 +62,14 @@ class Autoloader {
 	 */
 	private function autoload($className) {
 		if (0 === strpos($className, $this->nameSpace . self::NS_CHAR)) {
-			$libDir = 'lib' . self::DS . 'insphare' . self::DS;
-			$arrIncludePath = array(
-				$libDir,
-				'base-listener',
-				'base-entity'
-			);
-			foreach ($arrIncludePath as $directory) {
-				$fullPath = __DIR__ . self::DS . $directory;
-
+			foreach ($this->includePath as $includePath) {
 				$file = str_replace(array(
 						'\\',
 						$this->nameSpace,
 						self::DS . self::DS
 					), array(
 						self::DS,
-						$fullPath,
+						$includePath,
 						self::DS
 					), $className) . '.php';
 
