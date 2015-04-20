@@ -13,7 +13,7 @@
    "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/Insphare/insphare-base"
+            "url": "https://github.com/Insphare/insphare-orm"
         }
     ],
    "require": {
