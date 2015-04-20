@@ -63,10 +63,9 @@ class Factory {
 	 * @return \Doctrine\ORM\Configuration
 	 */
 	private function getConfiguration() {
-		$ds = DIRECTORY_SEPARATOR;
+		// isn't required to add the base-entity (meta) into anno's phat! because can be included by extending the class. :)
 		$doctrinePhat = EnvironmentVars::get('doctrine.path');
 		$arrAnnotations = (array)$doctrinePhat['entities'];
-		$arrAnnotations[] = implode($ds, array_merge(array_slice(explode($ds, __DIR__), 0, -4), array('base-entity')));
 		$pathToProxies = $doctrinePhat['proxy'];
 		$isDev = EnvironmentVars::get('doctrine.is_development');
 		$cache = new ArrayCache();

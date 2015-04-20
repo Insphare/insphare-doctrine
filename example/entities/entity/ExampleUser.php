@@ -53,6 +53,7 @@ class ExampleUser extends metaColumns {
 	 */
 	protected $loginCount;
 
+
     /**
      * Get id
      *
