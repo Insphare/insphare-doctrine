@@ -66,6 +66,19 @@ class Util {
 	}
 
 	/**
+	 * @param string $entityName
+	 * @return mixed
+	 */
+	public static function removeEntityNamespace($entityName) {
+		$nameSpace = EnvironmentVars::get('doctrine.namespace');
+		if (!empty($nameSpace) && 0 === strpos($entityName, $nameSpace)) {
+			$entityName = preg_replace('~^' . preg_quote($nameSpace) . '(.*)~', '$1', $entityName);
+		}
+
+		return $entityName;
+	}
+
+	/**
 	 * @param $string
 	 */
 	private static function ensureBackSlashAtFirstChar(&$string) {
