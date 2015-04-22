@@ -4,6 +4,7 @@ $ds = DIRECTORY_SEPARATOR;
 
 $arrIncludePath = array(
 	'entity' => __DIR__ . $ds . 'base-entity' . $ds . 'entity',
+	'Insphare' => __DIR__ . $ds . 'lib' . $ds . 'insphare',
 );
 
 foreach ($arrIncludePath as $namespace => $includePath) {
