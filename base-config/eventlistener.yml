@@ -6,3 +6,5 @@ doctrine.eventlistener:
   global-handler:
     events: [onFlush,preUpdate,preRemove,prePersist,postUpdate,postPersist,postRemove,postLoad]
     class: 'Insphare\ORM\Listener\Base\Entity'
+
+doctrine.listenerPath: # empty
