@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Insphare\ORM\Doctrine\Util;
 use Insphare\ORM\Listener\Exception\ClassMissing;
 use Insphare\ORM\Listener\Exception\NotAvailable;
 use Insphare\ORM\Listener\ListenerAbstract;
@@ -29,7 +30,7 @@ class Entity {
 		$entityClassName = get_class($entity);
 
 		//@todo check
-		// Core_Autoloader::treatNameSpace($entityClassName);
+		$entityClassName = Util::removeEntityNamespace($entityClassName);
 		$listenerClassName = 'Listener_' . ucfirst($entityClassName);
 
 		if (!class_exists($listenerClassName, true)) {
