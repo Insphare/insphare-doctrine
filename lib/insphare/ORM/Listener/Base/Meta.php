@@ -4,6 +4,7 @@ namespace Insphare\ORM\Listener\Base;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Insphare\Base\EnvironmentVars;
+use Insphare\Base\Reveal;
 
 /**
  * Class Listener_CaseBased_Meta
@@ -85,7 +86,7 @@ class Meta {
 	 * @param $state
 	 */
 	private function setUser($entity, $state) {
-		$userId = EnvironmentVars::get(EnvironmentVars::USER_ID);
+		$userId = Reveal::getUserId();
 
 		$methodName = $this->generateMethodName($state, 'user');
 		if (method_exists($entity, $methodName) && (int)$userId > 0) {

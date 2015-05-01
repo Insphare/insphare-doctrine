@@ -29,7 +29,6 @@ class Entity {
 	private function getListenerClass($entity) {
 		$entityClassName = get_class($entity);
 
-		//@todo check
 		$entityClassName = Util::removeEntityNamespace($entityClassName);
 		$listenerClassName = 'Listener_' . ucfirst($entityClassName);
 
