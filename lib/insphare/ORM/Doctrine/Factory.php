@@ -6,7 +6,6 @@ use Insphare\Base\EnvironmentVars;
 use Insphare\ORM\Doctrine as insphareDoctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
-use Insphare\ORM\Filter\SoftDelete;
 
 /**
  * Class Factory
@@ -35,7 +34,7 @@ class Factory {
 			$em = EntityManager::create($doctrineFactory->getDatabaseParams(), $doctrineFactory->getConfiguration());
 			$doctrineFactory->registerEventListener($em);
 			// @todo make this configureable
-			$em->getConfiguration()->addFilter('softDelete', new SoftDelete());
+			$em->getConfiguration()->addFilter('softDelete', 'Insphare\ORM\Filter\SoftDelete');
 			$em->getFilters()->enable('softDelete');
 
 			self::$entityManager[(int)true] = $em;
