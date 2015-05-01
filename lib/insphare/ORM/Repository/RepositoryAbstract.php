@@ -1,5 +1,5 @@
 <?php
-namespace Insphare\Abstracts;
+namespace Insphare\ORM\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
