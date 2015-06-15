@@ -3,6 +3,7 @@ namespace Insphare\ORM\Doctrine;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Insphare\Base\EnvironmentVars;
+use Insphare\Config\Configuration;
 use Insphare\ORM\Doctrine as insphareDoctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -59,7 +60,12 @@ class Factory {
 	 * @return mixed
 	 */
 	private function getDatabaseParams() {
-		$dbParams = EnvironmentVars::get('database-credentials');
+		$key = 'database-credentials';
+		$dbParams = EnvironmentVars::get($key);
+		if (class_exists('Configuration') && !is_null(Configuration::g($key))) {
+			$dbParams = Configuration::g($key);
+		}
+
 		return $dbParams;
 	}
 
