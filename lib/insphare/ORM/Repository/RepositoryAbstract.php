@@ -2,6 +2,7 @@
 namespace Insphare\ORM\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Insphare\ORM\Doctrine\Util;
 
 /**
  * Class RepositoryAbstract
@@ -19,7 +20,7 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @return QueryBuilder
 	 */
 	protected function cqb() {
-		return $this->createQueryBuilder($this->getEntityName());
+		return $this->createQueryBuilder(Util::removeEntityNamespace($this->getEntityName()));
 	}
 
 	/**
