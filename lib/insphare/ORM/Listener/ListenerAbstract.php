@@ -16,7 +16,7 @@ abstract class ListenerAbstract implements ListenerInterface {
 	 * @param \entity\metaColumns|object $entity
 	 */
 	protected function includeInFlush($entity ) {
-		$entityManger = Factory::getEntityManager();
+		$entityManger = $this->getEntityManager();
 
 		$objMetaData = $entityManger->getClassMetadata( get_class( $entity ) );
 		if( $entityManger->getUnitOfWork()->isScheduledForInsert( $entity ) ||
@@ -30,5 +30,12 @@ abstract class ListenerAbstract implements ListenerInterface {
 			}
 			$entityManger->getUnitOfWork()->computeChangeSet( $objMetaData, $entity );
 		}
+	}
+
+	/**
+	 * @return \Doctrine\ORM\EntityManager
+	 */
+	protected function getEntityManager() {
+		return Factory::getEntityManager();
 	}
 }
