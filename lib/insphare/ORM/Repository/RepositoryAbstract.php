@@ -17,10 +17,24 @@ abstract class RepositoryAbstract extends EntityRepository {
 	}
 
 	/**
+	 * @param null|int $offset
+	 * @param null|int $limit
 	 * @return QueryBuilder
 	 */
-	protected function cqb() {
-		return $this->createQueryBuilder(Util::removeEntityNamespace($this->getEntityName()));
+	protected function cqb($offset = null, $limit = null) {
+		return $this->createQueryBuilder(Util::removeEntityNamespace($this->getEntityName()))->setFirstResult($offset)->setMaxResults($limit);
+	}
+
+	/**
+	 * @param QueryBuilder $qb
+	 * @param null $custom
+	 * @return int
+	 */
+	protected function count(QueryBuilder $qb, $custom = null) {
+		$entityName = Util::removeEntityNamespace($this->getEntityName());
+		$qb->setFirstResult(null)->setMaxResults(null);
+		$qb->select($qb->expr()->count((is_null($custom) ? $entityName : $custom)));
+		return (int)$qb->getQuery()->getSingleScalarResult();
 	}
 
 	/**
