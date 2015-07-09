@@ -1,6 +1,7 @@
 <?php
 namespace Insphare\ORM\Doctrine;
 
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\EntityNotFoundException;
 
 class Traversal {
@@ -50,7 +51,7 @@ class Traversal {
 					$mxdData = isset($mxdData[$strComponent]) ? $mxdData[$strComponent] : null;
 				}
 				elseif (is_object($mxdData)) {
-					$strComponent = preg_replace_callback('~([a-z0-9])_+([a-z])?~', function($m) { return ucfirst($m[1]); }, ('get_' . $strComponent));
+					$strComponent = Inflector::camelize('get_'.$strComponent);
 					$mxdData = method_exists($mxdData, $strComponent) ? $mxdData->$strComponent() : null;
 				}
 				else {
