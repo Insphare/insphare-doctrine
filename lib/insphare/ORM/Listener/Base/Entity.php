@@ -30,8 +30,8 @@ class Entity {
 		$entityClassName = get_class($entity);
 
 		$entityClassName = Util::removeEntityNamespace($entityClassName);
-		$listenerClassName = 'Listener_' . ucfirst($entityClassName);
-
+		$listenerClassName = 'Listener_' . $entityClassName;
+		$listenerClassName = preg_replace_callback('~_(\w)~', function($row) { return '_' . ucfirst($row[1]); }, $listenerClassName);
 		if (!class_exists($listenerClassName, true)) {
 			throw new NotAvailable($entityClassName);
 		}
