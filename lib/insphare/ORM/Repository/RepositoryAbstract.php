@@ -50,4 +50,25 @@ abstract class RepositoryAbstract extends EntityRepository {
 
 		return $entity;
 	}
+
+	/**
+	 * @param null|int $offset
+	 * @param null|int $limit
+	 *
+	 * @return \Doctrine\ORM\Query
+	 */
+	public function getAll($offset = null, $limit = null) {
+		$objQb = $this->cqb($offset, $limit);
+
+		return $objQb->getQuery()->getResult();
+	}
+
+	/**
+	 * @since  2015-10
+	 *
+	 * @return int
+	 */
+	public function getCountAll() {
+		return $this->count($this->cqb());
+	}
 }
