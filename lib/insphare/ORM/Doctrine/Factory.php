@@ -7,6 +7,7 @@ use Insphare\Config\Configuration;
 use Insphare\ORM\Doctrine as insphareDoctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Factory
@@ -81,6 +82,30 @@ class Factory {
 		$isDev = EnvironmentVars::get('doctrine.is_development');
 		$cache = new ArrayCache();
 		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies, $cache, false);
+
+		$path = array_slice(explode(DIRECTORY_SEPARATOR, __DIR__), 0, -6);
+		foreach (explode('/', 'beberlei/DoctrineExtensions/config/mysql.yml') as $pathPart) {
+			$path[] = $pathPart;
+		}
+
+		$path = implode(DIRECTORY_SEPARATOR, $path);
+		$config = Traversal::traverse(Yaml::parse($path), 'doctrine.orm.dql');
+		foreach ($config as $key => $extensions) {
+			switch ($key) {
+				case 'datetime_functions':
+					$configuration->setCustomDatetimeFunctions($extensions);
+					break;
+
+				case 'numeric_functions':
+					$configuration->setCustomNumericFunctions($extensions);
+					break;
+
+				case 'string_functions':
+					$configuration->setCustomStringFunctions($extensions);
+					break;
+			}
+		}
+
 		return $configuration;
 	}
 }
