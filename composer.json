@@ -19,7 +19,8 @@
    "require": {
        "doctrine/orm": "2.5.*",
        "symfony/yaml": "2.6.6",
-       "insphare/base": "*"
+       "insphare/base": "*",
+       "beberlei/DoctrineExtensions": "^1.0@dev"
     },
 	"autoload": {
        "files": ["bootstrap.php"]
