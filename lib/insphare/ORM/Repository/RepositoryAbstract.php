@@ -1,6 +1,7 @@
 <?php
 namespace Insphare\ORM\Repository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Insphare\ORM\Doctrine\Util;
 
@@ -57,8 +58,13 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 *
 	 * @return \Doctrine\ORM\Query
 	 */
-	public function getAll($offset = null, $limit = null) {
+	public function getAll($offset = null, $limit = null, array $order = []) {
 		$objQb = $this->cqb($offset, $limit);
+		if (!empty($order)) {
+			foreach ($order as $column => $sortMode) {
+				$objQb->addOrderBy(new Expr\OrderBy($column, $sortMode));
+			}
+		}
 
 		return $objQb->getQuery()->getResult();
 	}
