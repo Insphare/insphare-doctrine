@@ -55,8 +55,9 @@ abstract class RepositoryAbstract extends EntityRepository {
 	/**
 	 * @param null|int $offset
 	 * @param null|int $limit
+	 * @param array $order
 	 *
-	 * @return \Doctrine\ORM\Query
+	 * @return array
 	 */
 	public function getAll($offset = null, $limit = null, array $order = []) {
 		$objQb = $this->cqb($offset, $limit);
