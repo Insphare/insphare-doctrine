@@ -57,15 +57,15 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @param null|int $offset
 	 * @param null|int $limit
 	 * @param array $order
-	 * @param Criteria $critera
+	 * @param Criteria $criteria
 	 *
 	 * @return array
 	 */
-	public function getAll($offset = null, $limit = null, array $order = [], Criteria $critera = null) {
+	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null) {
 		$objQb = $this->cqb($offset, $limit);
 
-		if (!is_null($critera)) {
-			$objQb->addCriteria($critera);
+		if (!is_null($criteria)) {
+			$objQb->addCriteria($criteria);
 		}
 
 		if (!empty($order)) {
