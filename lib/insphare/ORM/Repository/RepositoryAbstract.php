@@ -1,5 +1,6 @@
 <?php
 namespace Insphare\ORM\Repository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -56,11 +57,17 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @param null|int $offset
 	 * @param null|int $limit
 	 * @param array $order
+	 * @param Criteria $critera
 	 *
 	 * @return array
 	 */
-	public function getAll($offset = null, $limit = null, array $order = []) {
+	public function getAll($offset = null, $limit = null, array $order = [], Criteria $critera = null) {
 		$objQb = $this->cqb($offset, $limit);
+
+		if (!is_null($critera)) {
+			$objQb->addCriteria($critera);
+		}
+
 		if (!empty($order)) {
 			foreach ($order as $column => $sortMode) {
 				$objQb->addOrderBy(new Expr\OrderBy($column, $sortMode));
