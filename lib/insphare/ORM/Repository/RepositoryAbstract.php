@@ -64,7 +64,7 @@ abstract class RepositoryAbstract extends EntityRepository {
 	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null) {
 		$objQb = $this->cqb($offset, $limit);
 
-		if (!is_null($criteria)) {
+		if ($criteria instanceof Criteria) {
 			$objQb->addCriteria($criteria);
 		}
 
@@ -80,9 +80,16 @@ abstract class RepositoryAbstract extends EntityRepository {
 	/**
 	 * @since  2015-10
 	 *
+	 * @param Criteria $criteria
+	 *
 	 * @return int
 	 */
-	public function getCountAll() {
-		return $this->count($this->cqb());
+	public function getCountAll($criteria = null) {
+		$objQb = $this->cqb();
+		if ($criteria instanceof Criteria) {
+			$objQb->addCriteria($criteria);
+		}
+
+		return $this->count($objQb);
 	}
 }
