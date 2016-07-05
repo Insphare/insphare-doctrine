@@ -63,7 +63,7 @@ class Factory {
 	private function getDatabaseParams() {
 		$key = 'database-credentials';
 		$dbParams = EnvironmentVars::get($key);
-		if (class_exists('Insphare\Config\Configuration') && !is_null(Configuration::g($key))) {
+		if (class_exists('Insphare\Config\Configuration') && is_null(Configuration::g($key))) {
 			Configuration::c();
 			$dbParams = Configuration::g($key);
 		}
