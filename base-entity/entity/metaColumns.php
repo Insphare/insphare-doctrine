@@ -4,7 +4,7 @@ namespace entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="metaColumns", *indexes={@ORM\Index(name="ix_flag_soft_delete", columns={"flag_soft_delete"})})
+ * @ORM\Table(name="metaColumns", indexes={@ORM\Index(name="ix_flag_soft_delete", columns={"flag_soft_delete"})})
  * @ORM\MappedSuperclass
  */
 abstract class metaColumns {
