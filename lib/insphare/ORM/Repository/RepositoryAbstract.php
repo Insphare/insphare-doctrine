@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Insphare\ORM\Doctrine\Util;
+use Insphare\ORM\Tool\QueryAppender;
 
 /**
  * Class RepositoryAbstract
@@ -59,18 +60,18 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @param array $order
 	 * @param Criteria $criteria
 	 *
-	 * @param \DataProvider_QueryAppender|null $appender
+	 * @param QueryAppender|null $appender
 	 * @return array
 	 * @throws \Doctrine\ORM\Query\QueryException
 	 */
-	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null, \DataProvider_QueryAppender $appender = null) {
+	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null, QueryAppender $appender = null) {
 		$objQb = $this->cqb($offset, $limit);
 
 		if ($criteria instanceof Criteria) {
 			$objQb->addCriteria($criteria);
 		}
 
-		if ($appender instanceof \DataProvider_QueryAppender) {
+		if ($appender instanceof QueryAppender) {
 			$appender->apply($objQb);
 		}
 
