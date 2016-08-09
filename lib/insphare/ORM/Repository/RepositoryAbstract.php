@@ -59,13 +59,19 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @param array $order
 	 * @param Criteria $criteria
 	 *
+	 * @param \DataProvider_QueryAppender|null $appender
 	 * @return array
+	 * @throws \Doctrine\ORM\Query\QueryException
 	 */
-	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null) {
+	public function getAll($offset = null, $limit = null, array $order = [], Criteria $criteria = null, \DataProvider_QueryAppender $appender = null) {
 		$objQb = $this->cqb($offset, $limit);
 
 		if ($criteria instanceof Criteria) {
 			$objQb->addCriteria($criteria);
+		}
+
+		if ($appender instanceof \DataProvider_QueryAppender) {
+			$appender->apply($objQb);
 		}
 
 		if (!empty($order)) {
@@ -73,6 +79,8 @@ abstract class RepositoryAbstract extends EntityRepository {
 				$objQb->addOrderBy(new Expr\OrderBy($column, $sortMode));
 			}
 		}
+
+
 
 		return $objQb->getQuery()->getResult();
 	}
