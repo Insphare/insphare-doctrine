@@ -81,7 +81,7 @@ abstract class RepositoryAbstract extends EntityRepository {
 			}
 		}
 
-
+//		print_r($objQb->getQuery()-> getSQL());
 
 		return $objQb->getQuery()->getResult();
 	}
