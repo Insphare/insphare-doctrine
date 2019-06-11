@@ -84,7 +84,7 @@ class Factory {
 		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies, $cache, false);
 
 		$path = array_slice(explode(DIRECTORY_SEPARATOR, __DIR__), 0, -6);
-		foreach (explode('/', 'beberlei/DoctrineExtensions/config/mysql.yml') as $pathPart) {
+		foreach (explode('/', 'beberlei/doctrineextensions/config/mysql.yml') as $pathPart) {
 			$path[] = $pathPart;
 		}
 
