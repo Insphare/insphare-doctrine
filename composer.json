@@ -1,28 +1,36 @@
 {
-    "name": "insphare/orm",
-    "type": "library",
-    "description": "Insphare orm simplified usage",
-    "homepage": "https://github.com/Insphare/insphare-orm/",
-    "keywords": ["insphare", "orm"],
-    "license": "MIT",
-    "authors": [
-        {"name": "Manuel Will", "email": "info@insphare.de"}
-    ],
-    "require-dev": {
-    },
-   "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/Insphare/insphare-base"
-        }
-    ],
-   "require": {
-       "doctrine/orm": "2.5.*",
-       "symfony/yaml": "2.6.6",
-       "insphare/base": "*",
-       "beberlei/DoctrineExtensions": "^1.0"
-    },
-	"autoload": {
-       "files": ["bootstrap.php"]
-	}
+  "name": "insphare/orm",
+  "type": "library",
+  "description": "Insphare orm simplified usage",
+  "homepage": "https://github.com/Insphare/insphare-orm/",
+  "keywords": [
+    "insphare",
+    "orm"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Manuel Will",
+      "email": "info@insphare.de"
+    }
+  ],
+  "require-dev": {
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/Insphare/insphare-base"
+    }
+  ],
+  "require": {
+    "doctrine/orm": "^2.6.3",
+    "symfony/yaml": "2.6.6",
+    "insphare/base": "*",
+    "beberlei/DoctrineExtensions": "^1.0"
+  },
+  "autoload": {
+    "files": [
+      "bootstrap.php"
+    ]
+  }
 }
