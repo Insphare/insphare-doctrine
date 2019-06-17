@@ -99,6 +99,6 @@ abstract class RepositoryAbstract extends EntityRepository {
 			$objQb->addCriteria($criteria);
 		}
 
-		return $this->count($objQb);
+		return $this->countRows($objQb);
 	}
 }
