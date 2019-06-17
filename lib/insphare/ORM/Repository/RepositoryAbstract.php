@@ -33,7 +33,7 @@ abstract class RepositoryAbstract extends EntityRepository {
 	 * @param null $custom
 	 * @return int
 	 */
-	public function count(QueryBuilder $qb, $custom = null) {
+	public function countRows(QueryBuilder $qb, $custom = null) {
 		$entityName = Util::removeEntityNamespace($this->getEntityName());
 		$qb->setFirstResult(null)->setMaxResults(null);
 		$qb->select($qb->expr()->count((is_null($custom) ? $entityName : $custom)));
