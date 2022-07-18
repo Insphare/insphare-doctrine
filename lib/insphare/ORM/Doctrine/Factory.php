@@ -89,8 +89,8 @@ class Factory {
 		}
 
 		$path = implode(DIRECTORY_SEPARATOR, $path);
-		$config = Traversal::traverse(Yaml::parse($path), 'doctrine.orm.dql');
-		foreach ($config as $key => $extensions) {
+    $config = Traversal::traverse(Yaml::parse(file_get_contents($path)), 'doctrine.orm.dql');
+    foreach ($config as $key => $extensions) {
 			switch ($key) {
 				case 'datetime_functions':
 					$configuration->setCustomDatetimeFunctions($extensions);
