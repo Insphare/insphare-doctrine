@@ -11,8 +11,6 @@ class Traversal {
 	 */
 	private $data;
 
-    private $separator = '.';
-
 	/**
 	 * Static call with data and path.
 	 *
@@ -22,9 +20,9 @@ class Traversal {
 	 * @return mixed
 	 */
 	public static function traverse($data, $path, $separator = '.') {
-		$objInstance = new self($data, $separator);
+		$objInstance = new self($data);
 
-		return $objInstance->walk($path);
+		return $objInstance->walk($path, $separator);
 	}
 
 	/**
@@ -32,11 +30,8 @@ class Traversal {
 	 *
 	 * @param array|object $data
 	 */
-	private function __construct($data, $separator = '.') {
+	private function __construct($data) {
 		$this->data = $data;
-        if (!empty($separator)) {
-            $this->separator = (string)$separator;
-        }
 	}
 
 	/**
