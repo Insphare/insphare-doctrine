@@ -40,9 +40,9 @@ class Traversal {
 	 * @param string|array $path
 	 * @return mixed
 	 */
-	public function walk($path) {
+	public function walk($path, $separator = '.') {
 		if (is_scalar($path)) {
-			$path = explode('.', $path);
+			$path = explode($separator, $path);
 		}
 		$mxdData = $this->data;
 		try {
