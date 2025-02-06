@@ -23,8 +23,9 @@
     }
   ],
   "require": {
+    "doctrine/dbal": "^4",
+    "symfony/cache": "^7",
     "doctrine/orm": "2.20.2",
-    "doctrine/cache": "2.2.0",
     "symfony/yaml": "4.4.43",
     "insphare/base": "*",
     "beberlei/DoctrineExtensions": "^1.0"
