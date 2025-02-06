@@ -23,6 +23,7 @@
     }
   ],
   "require": {
+    "php": "7.4.3",
     "doctrine/orm": "v2.7.3",
     "symfony/yaml": "4.4.43",
     "insphare/base": "*",
@@ -32,6 +33,19 @@
     "files": [
       "bootstrap.php"
     ]
+  },
+  "config": {
+    "secure-http": true,
+    "github-protocols": [
+      "git",
+      "https"
+    ],
+    "platform": {
+      "php": "7.4.3"
+    },
+    "allow-plugins": {
+      "ocramius/package-versions": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true
