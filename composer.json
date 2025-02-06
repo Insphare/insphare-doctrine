@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "doctrine/orm": "v2.7.5",
+    "doctrine/orm": "3.3.2",
     "symfony/yaml": "4.4.43",
     "insphare/base": "*",
     "beberlei/DoctrineExtensions": "^1.0"
