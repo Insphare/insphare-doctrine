@@ -1,7 +1,8 @@
 <?php
 namespace Insphare\ORM\Doctrine;
 
-use Doctrine\ORM\Mapping\Cache;
+use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\Psr6\CacheItem;
 use Insphare\Base\EnvironmentVars;
 use Insphare\Config\Configuration;
 use Insphare\ORM\Doctrine as insphareDoctrine;
@@ -81,8 +82,7 @@ class Factory {
 		$arrAnnotations = (array)$doctrinePhat['entities'];
 		$pathToProxies = $doctrinePhat['proxy'];
 		$isDev = EnvironmentVars::get('doctrine.is_development');
-		$cache = new Cache();
-		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies, $cache, false);
+		$configuration = Setup::createAnnotationMetadataConfiguration($arrAnnotations, $isDev, $pathToProxies);
 
 		$path = array_slice(explode(DIRECTORY_SEPARATOR, __DIR__), 0, -6);
 		foreach (explode('/', 'beberlei/doctrineextensions/config/mysql.yml') as $pathPart) {
