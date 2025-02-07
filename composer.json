@@ -24,7 +24,7 @@
   ],
   "require": {
     "php": "7.4.3",
-    "doctrine/orm": "v2.7.3",
+    "doctrine/orm": "v2.7.5",
     "symfony/yaml": "4.4.43",
     "insphare/base": "*",
     "beberlei/doctrineextensions": "^1.0"
